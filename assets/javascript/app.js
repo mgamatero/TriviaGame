@@ -1,96 +1,52 @@
 // JavaScript function that wraps everything
+
+
 $(document).ready(function () {
+    var questionTimer
 
-    var guitarArr = [
-        {
-            value: 0
-        },
+    $("#splashButton").on("click", function () {
 
-        {
-            value: 0
-        },
-
-        {
-            value: 0
-        },
-
-        {
-            value: 0
-        }
-    ]
+        $("#splashScreen").hide()
 
 
-    //random gameplay soundfiles
-    var chordArray =["assets/images/achord.m4a","assets/images/echord.m4a","assets/images/fchord.m4a","assets/images/gchord.m4a"]
-    var winSongArray = ["assets/images/blackbird.m4a","assets/images/ribbonsinthesky.m4a","assets/images/sayyouwontletgo.m4a","assets/images/winner.m4a","assets/images/winner2.m4a"]
-    
+        $("#questions").show()
 
-    // initializetotalWins, display on screen
-    var totalWins = 0
-    $("#totalWins").html(totalWins)
+        var questionTimer
+        var i = 30
 
-    // initialize totalWins, display on screen
-    var totalLosses = 0
-    $("#totalLosses").html(totalLosses)
-
-    //display "--" on screen for previous game status
-    $("#win_lose").html("---")
-
-    var totalScore
-    var goalScore
+        questionTimer = setInterval(function () {
+            console.log(i)
+            i--
+        }, 1000)
 
 
-    function initialize() {
-        // initialize totalScore, display on screen
-        totalScore = 0
-        $("#totalScore").html(totalScore)
 
-        // initialize goal score, display on screen
-        //+100 because sometimes the goalScore is less than 100 and it messes up the random values
-        goalScore = (Math.floor(Math.random() * 100)) + 100
-        $("#goalScore").html(goalScore)
 
-        // set random GuitarValues - this assigns point values for attribute "points"
-        for (var x = 0; x < 4; x++) {
-            guitarArr[x].value = Math.floor(Math.random() * (Math.floor(goalScore / 4)))
-            $(".guitar" + x).attr("points", guitarArr[x].value)
-        }
-    }
+        $("#questionNum").html(i)
 
-    initialize()
+        $("#correctAnswer").on("click", function () {
+            $("#questions").hide()
 
-    $(".guitar").on("click", function () {
-        //update totalScore and update display
-        totalScore = totalScore + parseInt($(this).attr("points"))
-        $("#totalScore").html(totalScore)
-        
-        //play random chord  
-        let chord = new Audio(chordArray[Math.floor(Math.random()*4)])
-        chord.play()
+        })
+        // setTimeout($("#animation").show())
 
-        //logic
-        if (totalScore === goalScore) {
-            totalWins++
-            //display to html
-            $("#win_lose").html("You won!")
-            $("#totalWins").html(totalWins)
-
-            //play random win song
-            let winnerSong = new Audio(winSongArray[Math.floor(Math.random()*5)])
-            winnerSong.play()
-            initialize()
-        }
-        else if (totalScore > goalScore) {
-            totalLosses++
-            //display to html
-            $("#win_lose").html("You lost!")
-            $("#totalLosses").html(totalLosses)
-            let lossSong = new Audio("assets/images/loser.m4a")
-            lossSong.play()
-            initialize()
-        }
     })
 });
+
+
+
+
+
+
+
+
+
+    //   $("#questions").on("click", function(){
+    //     $("#questions").toggle()
+    //   })
+
+
+
 
 
 
