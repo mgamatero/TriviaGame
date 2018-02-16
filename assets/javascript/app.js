@@ -6,7 +6,7 @@ $(document).ready(function () {
         question: "What is the largest bone in the human body?",
         answers: ["Femur", "Lemur", "Radius", "Ulna"],
         correct: 0,
-        image: ""
+        image: "https://giphy.com/embed/IPArCs6qsnN84",
     },
 
     {
@@ -27,7 +27,7 @@ $(document).ready(function () {
         answers: ["He has been in trouble with the law", "He has trouble holding jobs", "He comes from a good family", "He is a Genius"],
         correct: 2,
         image: ""
-    },  
+    },
     {
         question: "In “Inception,” the spinning top is an example of a/an:",
         answers: ["Idol", "Hex", "Good Luck Charm", "Totem"],
@@ -91,65 +91,103 @@ $(document).ready(function () {
     }
     ]
 
+    //Fisher-Yates Shuffle, shuffles array contents
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+      
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+      
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+      
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+      
+        return array;
+      }
 
+
+      triviaQuestion = shuffle(triviaQuestion)
+
+
+    //initialize
+    $("#questions").hide()
     var questionTimer
+    var totalCorrect = 0
+    var totalWrong = 0
+    var timer = 8
 
+      
+    
     $("#splashButton").on("click", function () {
-
-        $("#splashScreen").hide()
-
-
+        $("#splash").hide()
         $("#questions").show()
-        var randQuestionNum = Math.floor(Math.random()*triviaQuestion.length)
-        var questionTimer
-        var i = 10
+        $("#timeRemaining").html(timer)
 
-        $("#actualQuestion").html(triviaQuestion[randQuestionNum].question)
-        $("#firstQuestion").html("A) " + triviaQuestion[randQuestionNum].answers[0])
-        $("#secondQuestion").html("B) " + triviaQuestion[randQuestionNum].answers[1])
-        $("#thirdQuestion").html("C) " + triviaQuestion[randQuestionNum].answers[2])
-        $("#fourthQuestion").html("D) " + triviaQuestion[randQuestionNum].answers[3])
+    })
 
-        $(".answer").on("click", function () {
+    //function countdown - decrements global var timer by 1, displays to html
+    function countdown() {
+        console.log(timer)
+        timer--
+        if (timer < 0) {
+            $("#timeRemaining").html("Time's Up!")
+            clearInterval(questionTimer)
+        }
+        $("#timeRemaining").html(timer)
+    }
 
-            console.log("value: " + $(this).attr("value"))
-            console.log("correct answer: " + triviaQuestion[randQuestionNum].correct)
-
-            if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
-                alert("Correct")
-            }
-            else {
-                alert("Wrong")
-            }
-
-
-
-        })
-
-
-        // questionTimer = setInterval(function () {
-        //     $("#timeRemaining").html(i)
-        //     i--
-        //     if (i<0){
-        //         clearInterval(questionTimer)
-        //             }
-        // }, 1000)
+        //start timer
+        questionTimer = setInterval(countdown(), 1000)
 
 
 
 
 
+    //function to load questions
+    function loadQuestion(qNum, randQnum) {
+
+        $("#questionNum").html(qNum)
+        $("#actualQuestion").html(triviaQuestion[randQnum].question)
+        $("#firstQuestion").html("A) " + triviaQuestion[randQnum].answers[0])
+        $("#secondQuestion").html("B) " + triviaQuestion[randQnum].answers[1])
+        $("#thirdQuestion").html("C) " + triviaQuestion[randQnum].answers[2])
+        $("#fourthQuestion").html("D) " + triviaQuestion[randQnum].answers[3])
+    }
 
 
+    var randQuestionNum = Math.floor(Math.random() * triviaQuestion.length)
+    var questionTimer
+    var questionNumber = 1
 
 
-        $("#questionNum").html(i)
+    loadQuestion(questionNumber, randQuestionNum)
 
-        $("#correctAnswer").on("click", function () {
+    $(".answer").on("click", function () {
+
+        if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
+            totalCorrect++
+            alert("Correct: " + totalCorrect)
+        }
+        if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
+            totalWrong++
+            alert("Wrong: " + totalWrong)
+        }
+        if (questionNumber > 9) {
             $("#questions").hide()
-
-        })
-        // setTimeout($("#animation").show())
+            return
+        }
+        else {
+            randQuestionNum = Math.floor(Math.random() * triviaQuestion.length)
+            questionNumber++
+            loadQuestion(questionNumber, randQuestionNum)
+    
+        }
 
     })
 });
@@ -162,9 +200,8 @@ $(document).ready(function () {
 
 
 
-    //   $("#questions").on("click", function(){
-    //     $("#questions").toggle()
-    //   })
+
+
 
 
 

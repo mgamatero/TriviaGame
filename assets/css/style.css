@@ -5,14 +5,6 @@ body{
     font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;   
 }
 
-.main{
-    margin-top: 5%;
-    max-width:80%;
-    max-height: 60%;
-    background-image: url("../images/blue_squares.jpg");
-    vertical-align: auto;
-}
-
 h1{
     font-size: 48px;
     font-style: 
@@ -29,32 +21,37 @@ h3{
     margin: 0 auto;
     
 }
-#splash{
-    margin: 0 auto;
-    width:75%;
+#splash{   
+    margin: 5% auto;
+    max-width:75%;
     max-height: 85%;
-    padding:15%;
+    padding:5%;
     border:solid 5px white;
     text-align: center;
     color: rgba(255, 255, 255, 0.993);
+    background-image: url("../images/blue_squares.jpg");
     
 }
 
 
 #questions{
-    margin: 0 auto;
-    width:75%;
+    margin: 5% auto;
+    max-width:75%;
     max-height: 85%;
-    padding:15%;
+    padding:5%;
     border:solid 5px white;
     text-align: center;
-    background-image: url("../images/black.jpg");
     color: rgba(255, 255, 255, 0.993);
+    background-image: url("../images/black.jpg");
 }
 
 #actualQuestion{
-    font-size: 18px;
+    font-size: 24px;
+}
 
+li{
+    text-align: left;
+    margin-left: 30%;
 }
 #answer{
     font-size: 18px;
