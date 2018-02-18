@@ -65,3 +65,18 @@ li{
 #animation{
     display: none;
 }
+
+#resultHeader{
+    text-decoration: underline;
+}
+#finalResult{
+    margin: 5% auto;
+    max-width:75%;
+    max-height: 85%;
+    padding:5%;
+    border:solid 5px white;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.993);
+    background-image: url("../images/result_wood.jpg");
+}
+                

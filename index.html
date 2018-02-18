@@ -22,11 +22,13 @@
         <div class="row">
             <div class="col-sm-12" id="splash">
                 <br>
-                <h1><strong>Welcome to a Random Trivia Game</strong></h1>
+                <h1>
+                    <strong>Welcome to a Random Trivia Game</strong>
+                </h1>
                 <br>
                 <hr>
                 <br>
-                
+
                 <h2>...Test your knowledge of random bits of trivia...</h2>
                 <br>
 
@@ -41,24 +43,43 @@
                 <button class="btn btn-danger" id="splashButton">Begin</button>
             </div>
         </div>
-        
+
 
 
         <div id="questions">
-            <h2>Time Remaining: <span id="timeRemaining"></span></h2>
+            <h2>Time Remaining:
+                <span id="timeRemaining"></span>
+            </h2>
             <br>
-            <h2>Question# <span id="questionNum"></span></h2>
+            <h2>Question#
+                <span id="questionNum"></span>
+            </h2>
             <br>
             <h2 id="actualQuestion"></h2>
             <ol>
                 <br>
                 <li class="answer" id="firstQuestion" value="0"></li>
-                <li class="answer" id="secondQuestion"  value="1"></li>
-                <li class="answer" id="thirdQuestion"  value="2"></li>
-                <li class="answer" id="fourthQuestion"  value="3"></li>
-                
-                
+                <li class="answer" id="secondQuestion" value="1"></li>
+                <li class="answer" id="thirdQuestion" value="2"></li>
+                <li class="answer" id="fourthQuestion" value="3"></li>
             </ol>
+        </div>
+
+        <div id="finalResult">
+            <h2 id="resultHeader">Results:</h2>
+            <br>
+            <h2>Total Questions:
+                <span id="totalQuestions"></span>
+            </h2>
+            <br>
+            <h2>Total Correct:
+                <span id="totalCorrect"></span>
+            </h2>
+            <br>
+            <h2>Total Incorrect:
+                <span id="totalWrong"></span>
+            </h2>
+            <br>
         </div>
     </main>
 

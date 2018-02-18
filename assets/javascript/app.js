@@ -94,64 +94,44 @@ $(document).ready(function () {
     //Fisher-Yates Shuffle, shuffles array contents
     function shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
-      
+
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
-      
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-      
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
-      
+
         return array;
-      }
+    }
 
-
-      triviaQuestion = shuffle(triviaQuestion)
-
-
-    //initialize
+    //initialize --
+    triviaQuestion = shuffle(triviaQuestion) //This shuffles the questions
     $("#questions").hide()
-    var questionTimer
+    $("#finalResult").hide()
+
     var totalCorrect = 0
     var totalWrong = 0
     var timer = 8
+    //---------------
 
-      
     
+    //This section deals hides the 
     $("#splashButton").on("click", function () {
         $("#splash").hide()
         $("#questions").show()
-        $("#timeRemaining").html(timer)
-
     })
-
-    //function countdown - decrements global var timer by 1, displays to html
-    function countdown() {
-        console.log(timer)
-        timer--
-        if (timer < 0) {
-            $("#timeRemaining").html("Time's Up!")
-            clearInterval(questionTimer)
-        }
-        $("#timeRemaining").html(timer)
-    }
-
-        //start timer
-        questionTimer = setInterval(countdown(), 1000)
-
-
-
-
 
     //function to load questions
     function loadQuestion(qNum, randQnum) {
-
+        timer = 8
+        questionTimer = setInterval(countdown, 1000)
         $("#questionNum").html(qNum)
         $("#actualQuestion").html(triviaQuestion[randQnum].question)
         $("#firstQuestion").html("A) " + triviaQuestion[randQnum].answers[0])
@@ -159,6 +139,30 @@ $(document).ready(function () {
         $("#thirdQuestion").html("C) " + triviaQuestion[randQnum].answers[2])
         $("#fourthQuestion").html("D) " + triviaQuestion[randQnum].answers[3])
     }
+
+    //function countdown - decrements global var timer by 1, displays to html
+    function countdown() {
+        timer--
+        if (timer <= 0) {
+            $("#timeRemaining").html("Time's Up!")
+            timer=0
+            totalWrong++
+            clearInterval(questionTimer)
+        }
+        else{
+            $("#timeRemaining").html(timer)
+        }
+        
+        console.log(timer)
+    }
+
+    function finalTally() {
+        $("#finalResult").show()
+        $("#totalQuestions").html(totalCorrect + totalWrong)
+        $("#totalCorrect").html(totalCorrect)
+        $("#totalWrong").html(totalWrong)
+    }
+
 
 
     var randQuestionNum = Math.floor(Math.random() * triviaQuestion.length)
@@ -172,21 +176,19 @@ $(document).ready(function () {
 
         if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
             totalCorrect++
-            alert("Correct: " + totalCorrect)
         }
         if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
             totalWrong++
-            alert("Wrong: " + totalWrong)
         }
         if (questionNumber > 9) {
             $("#questions").hide()
+            finalTally()
             return
         }
         else {
             randQuestionNum = Math.floor(Math.random() * triviaQuestion.length)
             questionNumber++
             loadQuestion(questionNumber, randQuestionNum)
-    
         }
 
     })
