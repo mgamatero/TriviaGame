@@ -62,8 +62,23 @@ li{
 }
 
 
-#animation{
-    display: none;
+#transition{
+    margin: 5% auto;
+    max-width:60%;
+    max-height: auto;
+    padding:5%;
+    border:solid 5px  rgba(47, 48, 45, 0.993);
+    text-align: center;
+    color: rgba(142, 228, 4, 0.993);
+    background-image: url("../images/rgb.jpg");
+}
+
+#transitionImg{
+
+   width: 200px;
+   height: auto;
+   
+   
 }
 
 #resultHeader{
@@ -77,6 +92,6 @@ li{
     border:solid 5px white;
     text-align: center;
     color: rgba(255, 255, 255, 0.993);
-    background-image: url("../images/result_wood.jpg");
+    background-color: black;
 }
                 
