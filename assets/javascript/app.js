@@ -128,6 +128,63 @@ $(document).ready(function () {
         return array;
     }
 
+    //function countdown - decrements global var timer by 1, displays to html
+
+    function countdown() {
+        if (timer <= 0) {
+            $("#timeRemaining").html("Time's Up!")
+            clearInterval(questionTimer)
+            $("#rightWrongTimeout").html("TIME IS UP!")
+            answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
+            totalWrong++
+            randQuestionNum++
+            questionNumber++
+            timer = 10
+            if (questionNumber <= 10) {
+                questionTimer = setInterval(countdown, 1000)
+                loadQuestion(questionNumber, randQuestionNum)
+            }
+        }
+        else {
+            $("#timeRemaining").html(timer)
+            timer--
+        }
+    }
+
+    //function to load questions
+    function loadQuestion(qNum, randQnum) {
+        $("#questionNum").html(qNum)
+        $("#actualQuestion").html(triviaQuestion[randQnum].question)
+        $("#firstQuestion").html("A) " + triviaQuestion[randQnum].answers[0])
+        $("#secondQuestion").html("B) " + triviaQuestion[randQnum].answers[1])
+        $("#thirdQuestion").html("C) " + triviaQuestion[randQnum].answers[2])
+        $("#fourthQuestion").html("D) " + triviaQuestion[randQnum].answers[3])
+    }
+
+    // function that displays answer and transitions once answer is picked
+    function answerAnimation(currQuest, correct, img) {
+        $("#questions").hide()
+        $("#transition").show()
+
+        $("#transitionQuestion").html(currQuest)
+        $("#correctAnswer").html(correct)
+        $('#transitionImg').attr("src", img)
+
+        var answerAnimationDelay = setTimeout(function () {
+            $("#transition").hide()
+            $("#questions").show()
+            clearTimeout(answerAnimationDelay)
+        }, 1000)
+    }
+
+    // function displays results
+    function finalTally() {
+
+        $("#totalQuestions").html(totalCorrect + totalWrong)
+        $("#totalCorrect").html(totalCorrect)
+        $("#totalWrong").html(totalWrong)
+    }
+
     //initialize --
     triviaQuestion = shuffle(triviaQuestion) //This shuffles the questions
     $("#questions").hide()
@@ -141,99 +198,71 @@ $(document).ready(function () {
     var questionTimer //variable for setInterval
     var questionNumber = 1
 
-    //function countdown - decrements global var timer by 1, displays to html
-    function countdown(counter) {
-        counter--
-        if (counter <= 0) {
-            $("#timeRemaining").html("Time's Up!")
-            
-            //totalWrong++
-            clearInterval(questionTimer)
-        }
-        else {
-            $("#timeRemaining").html(counter)
-        }
-    }
 
-    //function to load questions
-    function loadQuestion(qNum, randQnum) {
-        timer = 11
-        questionTimer = setInterval(countdown(timer), 1000)
 
-        $("#questionNum").html(qNum)
-        $("#actualQuestion").html(triviaQuestion[randQnum].question)
-        $("#firstQuestion").html("A) " + triviaQuestion[randQnum].answers[0])
-        $("#secondQuestion").html("B) " + triviaQuestion[randQnum].answers[1])
-        $("#thirdQuestion").html("C) " + triviaQuestion[randQnum].answers[2])
-        $("#fourthQuestion").html("D) " + triviaQuestion[randQnum].answers[3])
-    }
-
-    function answerAnimation(currQuest, correct, img) {
-        $("#questions").hide()
-        $("#transition").show()
-
-        $("#transitionQuestion").html(currQuest)
-        $("#correctAnswer").html(correct)
-        $('#transitionImg').attr("src", img)
-
-        var answerAnimationDelay = setTimeout(function () {
-            $("#transition").hide()
-            $("#questions").show()
-            clearTimeout(answerAnimationDelay)
-        }, 3000)
-    }
-
-    // function displays results
-    function finalTally() {
-
-        $("#totalQuestions").html(totalCorrect + totalWrong)
-        $("#totalCorrect").html(totalCorrect)
-        $("#totalWrong").html(totalWrong)
-    }
 
     //This section hides the splash screen and starts the questions
     $("#splashButton").on("click", function () {
         $("#splash").hide()
         $("#questions").show()
+        timer = 10
+
+        questionTimer = setInterval(countdown, 1000)
+        loadQuestion(questionNumber, randQuestionNum)
+
+
+        $(".answer").on("click", function () {
+            if (questionNumber > 10) {
+                clearInterval(questionTimer)
+                $("#questions").hide()
+                $("#finalResult").show()
+                finalTally()
+            }
+
+            // else if (timer === 0) {
+            //     $("#rightWrongTimeout").html("TIME IS UP!")
+            //     clearInterval(questionTimer)
+            //     answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
+            //     totalWrong++
+            //     randQuestionNum++
+            //     questionNumber++
+            //     timer = 10
+            //     if (questionNumber <= 10) {
+            //         questionTimer = setInterval(countdown, 1000)
+            //         loadQuestion(questionNumber, randQuestionNum)
+            //     }
+            // }
+            else if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
+                $("#rightWrongTimeout").html("CORRECT!")
+                clearInterval(questionTimer)
+                answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
+
+                totalCorrect++
+                randQuestionNum++
+                questionNumber++
+                timer = 10
+                if (questionNumber <= 10) {
+                    questionTimer = setInterval(countdown, 1000)
+                    loadQuestion(questionNumber, randQuestionNum)
+                }
+            }
+            else if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
+                $("#rightWrongTimeout").html("WRONG!")
+                clearInterval(questionTimer)
+                answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
+
+                totalWrong++
+                randQuestionNum++
+                questionNumber++
+                timer = 10
+                if (questionNumber <= 10) {
+                    questionTimer = setInterval(countdown, 1000)
+                    loadQuestion(questionNumber, randQuestionNum)
+                }
+            }
+
+        })//end click function                   
     })
-
-    //Main logic that runs the game
-    loadQuestion(questionNumber, randQuestionNum)
-
-
-    //Click function to capture answer 
-    $(".answer").on("click", function () {
-        if (questionNumber > 10) {
-            $("#questions").hide()
-            $("#finalResult").show()
-            finalTally()
-        }
-        else if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
-            $("#rightWrongTimeout").html("CORRECT!")
-            answerAnimation(triviaQuestion[randQuestionNum].question,triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-
-            totalCorrect++
-            randQuestionNum++
-            questionNumber++
-
-            if (questionNumber <= 10) {
-                loadQuestion(questionNumber, randQuestionNum)
-            }
-        }
-        else if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
-            $("#rightWrongTimeout").html("WRONG!")
-            answerAnimation(triviaQuestion[randQuestionNum].question,triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-
-            totalWrong++
-            randQuestionNum++
-            questionNumber++
-
-            if (questionNumber <= 10) {
-                loadQuestion(questionNumber, randQuestionNum)
-            }
-        }
-
-    })//end click function
 });  //close document.ready
 
 
