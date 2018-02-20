@@ -62,15 +62,13 @@ $(document).ready(function () {
         question: "What does HTML stand for?",
         answers: ["Hot Tamales Meal Large", "Hey There My Lady", "Typer Hext Markup Language", "Hyper Text Markup Language"],
         correct: 3,
-        image:"https://media.giphy.com/media/sl444NqppDOBa/giphy.gif"
-        // image: "assets/images/html.gif"
+        image: "https://media.giphy.com/media/sl444NqppDOBa/giphy.gif"
     },
     {
         question: "Which is the most populous state?",
         answers: ["New York", "Utah", "Oregon", "California"],
         correct: 3,
-        image:"https://media.giphy.com/media/2Wf4E5HlJhM0IrVV0x/giphy.gif"
-        // image: "assets/images/california.gif"
+        image: "https://media.giphy.com/media/2Wf4E5HlJhM0IrVV0x/giphy.gif"
     },
     {
         question: "Who is trying to seduce Benjamin in The Graduate?",
@@ -137,9 +135,15 @@ $(document).ready(function () {
     }
 
     //function countdown - decrements global var timer by 1, displays to html
-
     function countdown() {
-        if (timer <= 0) {
+        if (questionNumber > 10) {
+            clearInterval(questionTimer)
+            var delayFinal = setTimeout(function () {
+                finalTally()
+                clearTimeout(delayFinal)
+            }, 3000)
+        }
+        else if (timer <= 0) {
             $("#timeRemaining").html("Time's Up!")
             clearInterval(questionTimer)
             $("#rightWrongTimeout").html("TIME IS UP!")
@@ -148,10 +152,8 @@ $(document).ready(function () {
             randQuestionNum++
             questionNumber++
             timer = 10
-            if (questionNumber <= 10) {
-                questionTimer = setInterval(countdown, 1000)
-                loadQuestion(questionNumber, randQuestionNum)
-            }
+            questionTimer = setInterval(countdown, 1000)
+            loadQuestion(questionNumber, randQuestionNum)
         }
         else {
             $("#timeRemaining").html(timer)
@@ -171,26 +173,24 @@ $(document).ready(function () {
 
     // function that displays answer and transitions once answer is picked
     function answerAnimation(currQuest, correct, img) {
-        $("#transition").hide()
+        $("#transition").hide() //extra hide because sometimes, the previous gif is still shown
         $("#questions").hide()
-
         $("#transitionQuestion").html(currQuest)
         $("#correctAnswer").html(correct)
         $('#transitionImg').attr("src", img)
-
         $("#transition").show()
-   
-
         var answerAnimationDelay = setTimeout(function () {
             $("#transition").hide()
-            $("#questions").show()
+            if (questionNumber <= 10) {
+                $("#questions").show()
+            }
             clearTimeout(answerAnimationDelay)
-        }, 4000)
+        }, 3000)
     }
 
     // function displays results
     function finalTally() {
-
+        $("#finalResult").show()
         $("#totalQuestions").html(totalCorrect + totalWrong)
         $("#totalCorrect").html(totalCorrect)
         $("#totalWrong").html(totalWrong)
@@ -210,49 +210,37 @@ $(document).ready(function () {
     var questionNumber = 1
 
 
-
-
     //This section hides the splash screen and starts the questions
     $("#splashButton").on("click", function () {
         $("#splash").hide()
         $("#questions").show()
         timer = 10
-
         questionTimer = setInterval(countdown, 1000)
         loadQuestion(questionNumber, randQuestionNum)
 
 
         $(".answer").on("click", function () {
-            if (questionNumber > 10) {
-                clearInterval(questionTimer)
-                $("#questions").hide()
-                $("#finalResult").show()
-                finalTally()
-            }
-
-            // else if (timer === 0) {
-            //     $("#rightWrongTimeout").html("TIME IS UP!")
-            //     clearInterval(questionTimer)
-            //     answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-            //     totalWrong++
-            //     randQuestionNum++
-            //     questionNumber++
-            //     timer = 10
-            //     if (questionNumber <= 10) {
-            //         questionTimer = setInterval(countdown, 1000)
-            //         loadQuestion(questionNumber, randQuestionNum)
-            //     }
-            // }
-            else if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
+            if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
                 $("#rightWrongTimeout").html("CORRECT!")
                 clearInterval(questionTimer)
                 answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-
                 totalCorrect++
                 randQuestionNum++
                 questionNumber++
                 timer = 10
-                if (questionNumber <= 10) {
+                console.log("answerclick questionNumber - correct: " + questionNumber)
+                if (questionNumber > 10) {
+                    console.log("answerclick inside final if " + questionNumber)
+                    clearInterval(questionTimer)
+                    $("#questions").hide()
+                    $("#finalResult").show()
+                    var delayFinal = setTimeout(function () {
+                        finalTally()
+                        clearTimeout(delayFinal)
+                    }, 3000)
+                }
+                else {
+                    console.log("answerclick inside final else " + questionNumber)
                     questionTimer = setInterval(countdown, 1000)
                     loadQuestion(questionNumber, randQuestionNum)
                 }
@@ -261,19 +249,44 @@ $(document).ready(function () {
                 $("#rightWrongTimeout").html("WRONG!")
                 clearInterval(questionTimer)
                 answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-
                 totalWrong++
                 randQuestionNum++
                 questionNumber++
                 timer = 10
-                if (questionNumber <= 10) {
+                console.log("answerclick questionNumber - wrong: " + questionNumber)
+                if (questionNumber > 10) {
+                    clearInterval(questionTimer)
+                    var delayFinal = setTimeout(function () {
+                        finalTally()
+                        clearTimeout(delayFinal)
+                    }, 3000)
+                }
+                else {
+                    console.log("answerclick inside final else " + questionNumber)
                     questionTimer = setInterval(countdown, 1000)
                     loadQuestion(questionNumber, randQuestionNum)
                 }
             }
-
-        })  //end click answer                    
+        })//end click answer 
     })   //end click splash
+
+
+    $("#playAgainButton").on("click", function () {
+
+        totalCorrect = 0
+        totalWrong = 0
+        timer = 10
+        randQuestionNum = 0
+        questionNumber = 1
+        triviaQuestion = shuffle(triviaQuestion) //This shuffles the questions
+
+        $("#questions").show()
+        $("#transition").hide()
+        $("#finalResult").hide()
+
+        questionTimer = setInterval(countdown, 1000)
+        loadQuestion(questionNumber, randQuestionNum)
+    })
 });  //close document.ready
 
 
