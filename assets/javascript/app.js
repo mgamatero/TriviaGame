@@ -68,7 +68,8 @@ $(document).ready(function () {
         question: "Which is the most populous state?",
         answers: ["New York", "Utah", "Oregon", "California"],
         correct: 3,
-        image: "assets/images/california.gif"
+        // image: "assets/images/california.gif"
+        image: '"https://giphy.com/embed/2Wf4E5HlJhM0IrVV0x" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/california-county-percent-2Wf4E5HlJhM0IrVV0x">via GIPHY</a></p>"'
     },
     {
         question: "Who is trying to seduce Benjamin in The Graduate?",
@@ -174,7 +175,7 @@ $(document).ready(function () {
             $("#transition").hide()
             $("#questions").show()
             clearTimeout(answerAnimationDelay)
-        }, 1000)
+        }, 4000)
     }
 
     // function displays results
