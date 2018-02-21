@@ -107,6 +107,24 @@ $(document).ready(function () {
         image: "https://media.giphy.com/media/RvV4sUKIvrzGM/giphy.gif"
     },
     {
+        question: "What is the time for the fastest mile ever run?",
+        answers: ["1:43", "2:43", "3:43", "4:43"],
+        correct: 2,
+        image: "https://media.giphy.com/media/7kn27lnYSAE9O/giphy.gif"
+    },
+    {
+        question: "What is the tallest building in the world?",
+        answers: ["Tapei 101", "Petronas Towers", "Shanghai Tower", "Burj Khalifa"],
+        correct: 3,
+        image: "https://media.giphy.com/media/SoQcUe6jyVoxG/giphy.gif"
+    },
+    {
+        question: "What is the most common training command taught to dogs?",
+        answers: ["Stay", "Beg", "Sit", "Dance"],
+        correct: 2,
+        image: "https://media.giphy.com/media/xtGpIp4ixR6Gk/giphy.gif"
+    },
+    {
         question: "What is the square root of 256?",
         answers: ["36", "16", "14", "17"],
         correct: 1,
@@ -228,19 +246,17 @@ $(document).ready(function () {
                 randQuestionNum++
                 questionNumber++
                 timer = 10
-                console.log("answerclick questionNumber - correct: " + questionNumber)
+                //debug console.log("answerclick questionNumber - correct: " + questionNumber)
+                //debug console.log("answerclick inside final if " + questionNumber)
                 if (questionNumber > 10) {
-                    console.log("answerclick inside final if " + questionNumber)
                     clearInterval(questionTimer)
-                    $("#questions").hide()
-                    $("#finalResult").show()
                     var delayFinal = setTimeout(function () {
                         finalTally()
                         clearTimeout(delayFinal)
                     }, 3000)
                 }
                 else {
-                    console.log("answerclick inside final else " + questionNumber)
+                    //debug console.log("answerclick inside final else " + questionNumber)
                     questionTimer = setInterval(countdown, 1000)
                     loadQuestion(questionNumber, randQuestionNum)
                 }
@@ -262,7 +278,7 @@ $(document).ready(function () {
                     }, 3000)
                 }
                 else {
-                    console.log("answerclick inside final else " + questionNumber)
+                    //debug console.log("answerclick inside final else " + questionNumber)
                     questionTimer = setInterval(countdown, 1000)
                     loadQuestion(questionNumber, randQuestionNum)
                 }
