@@ -159,28 +159,31 @@ $(document).ready(function () {
             var delayFinal = setTimeout(function () {
                 finalTally()
                 clearTimeout(delayFinal)
-            }, 3000)
+            }, 4000)
         }
         else if (timer <= 0) {
             $("#timeRemaining").html("Time's Up!")
             clearInterval(questionTimer)
             $("#rightWrongTimeout").html("TIME IS UP!")
             answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
-            totalWrong++
+            totalTimeout++
             randQuestionNum++
             questionNumber++
             timer = 10
             questionTimer = setInterval(countdown, 1000)
+            console.log(randQuestionNum)
             loadQuestion(questionNumber, randQuestionNum)
         }
         else {
             $("#timeRemaining").html(timer)
             timer--
+            console.log("timer else: " + timer)
         }
     }
 
     //function to load questions
     function loadQuestion(qNum, randQnum) {
+        
         $("#questionNum").html(qNum)
         $("#actualQuestion").html(triviaQuestion[randQnum].question)
         $("#firstQuestion").html("A) " + triviaQuestion[randQnum].answers[0])
@@ -203,15 +206,16 @@ $(document).ready(function () {
                 $("#questions").show()
             }
             clearTimeout(answerAnimationDelay)
-        }, 3000)
+        }, 4000)
     }
 
     // function displays results
     function finalTally() {
         $("#finalResult").show()
-        $("#totalQuestions").html(totalCorrect + totalWrong)
+        $("#totalQuestions").html(totalCorrect + totalWrong + totalTimeout)
         $("#totalCorrect").html(totalCorrect)
         $("#totalWrong").html(totalWrong)
+        $("#totalTimeout").html(totalTimeout)
     }
 
     //initialize --
@@ -222,65 +226,68 @@ $(document).ready(function () {
 
     var totalCorrect = 0
     var totalWrong = 0
+    var totalTimeout = 0
     var timer
     var randQuestionNum = 0
     var questionTimer //variable for setInterval
     var questionNumber = 1
+    var questionDelay //variable for setTimeout
 
 
     //This section hides the splash screen and starts the questions
     $("#splashButton").on("click", function () {
         $("#splash").hide()
         $("#questions").show()
+
         timer = 10
         questionTimer = setInterval(countdown, 1000)
         loadQuestion(questionNumber, randQuestionNum)
 
 
         $(".answer").on("click", function () {
+            clearInterval(questionTimer)
+            timer = 10
             if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
                 $("#rightWrongTimeout").html("CORRECT!")
-                clearInterval(questionTimer)
                 answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
                 totalCorrect++
                 randQuestionNum++
                 questionNumber++
-                timer = 10
+
                 //debug console.log("answerclick questionNumber - correct: " + questionNumber)
                 //debug console.log("answerclick inside final if " + questionNumber)
                 if (questionNumber > 10) {
-                    clearInterval(questionTimer)
                     var delayFinal = setTimeout(function () {
                         finalTally()
                         clearTimeout(delayFinal)
-                    }, 3000)
+                    }, 4000)
                 }
                 else {
-                    //debug console.log("answerclick inside final else " + questionNumber)
+                    //debug console.log("answerclick inside final else " + questionNumber)                 
                     questionTimer = setInterval(countdown, 1000)
-                    loadQuestion(questionNumber, randQuestionNum)
+                    questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
                 }
             }
             else if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
                 $("#rightWrongTimeout").html("WRONG!")
-                clearInterval(questionTimer)
+
                 answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
                 totalWrong++
                 randQuestionNum++
                 questionNumber++
-                timer = 10
+
                 console.log("answerclick questionNumber - wrong: " + questionNumber)
                 if (questionNumber > 10) {
-                    clearInterval(questionTimer)
                     var delayFinal = setTimeout(function () {
                         finalTally()
                         clearTimeout(delayFinal)
-                    }, 3000)
+                    }, 4000)
                 }
                 else {
                     //debug console.log("answerclick inside final else " + questionNumber)
+
                     questionTimer = setInterval(countdown, 1000)
-                    loadQuestion(questionNumber, randQuestionNum)
+                    questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
                 }
             }
         })//end click answer 
@@ -291,6 +298,7 @@ $(document).ready(function () {
 
         totalCorrect = 0
         totalWrong = 0
+        totalTimeout = 0
         timer = 10
         randQuestionNum = 0
         questionNumber = 1
@@ -300,8 +308,9 @@ $(document).ready(function () {
         $("#transition").hide()
         $("#finalResult").hide()
 
+        clearInterval(questionTimer)
         questionTimer = setInterval(countdown, 1000)
-        loadQuestion(questionNumber, randQuestionNum)
+        questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
     })
 });  //close document.ready
 

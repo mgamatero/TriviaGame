@@ -45,58 +45,69 @@
         </div>
 
 
-
-        <div id="questions">
-            <h2>Time Remaining:
-                <span id="timeRemaining"></span>
-            </h2>
-            <br>
-            <h2>Question#
-                <span id="questionNum"></span>
-            </h2>
-            <br>
-            <h2 id="actualQuestion"></h2>
-            <ol>
+        <div class="row">
+            <div class="col-sm-12" id="questions">
+                <h2>Time Remaining:
+                    <span id="timeRemaining"></span>
+                </h2>
                 <br>
-                <li class="answer" id="firstQuestion" value="0"></li>
-                <li class="answer" id="secondQuestion" value="1"></li>
-                <li class="answer" id="thirdQuestion" value="2"></li>
-                <li class="answer" id="fourthQuestion" value="3"></li>
-            </ol>
+                <h2>Question#
+                    <span id="questionNum"></span>
+                </h2>
+                <br>
+                <h2 id="actualQuestion"></h2>
+                <ol>
+                    <br>
+                    <li class="answer" id="firstQuestion" value="0"></li>
+                    <li class="answer" id="secondQuestion" value="1"></li>
+                    <li class="answer" id="thirdQuestion" value="2"></li>
+                    <li class="answer" id="fourthQuestion" value="3"></li>
+                </ol>
+            </div>
         </div>
 
-        <div id="transition">
-            <img id="transitionImg" src="">
-            <br>
-            <br>
-            <h2>
-                <span id="rightWrongTimeout"></span>
-            </h2>
-            <br>
-            <h3>
-                <span id="transitionQuestion"></span>
-            </h3>
-            <h3>Correct Answer:
-                <span id="correctAnswer"></span>
-            </h3>
+        <div class="row">
+            <div class="col-sm-12" id="transition">
+                <img id="transitionImg" src="">
+                <br>
+                <br>
+                <h2>
+                    <span id="rightWrongTimeout"></span>
+                </h2>
+                <br>
+                <h3>
+                    <span id="transitionQuestion"></span>
+                </h3>
+                <h3>Correct Answer:
+                    <span id="correctAnswer"></span>
+                </h3>
+            </div>
         </div>
 
-        <div id="finalResult">
-            <h2 id="resultHeader">Results:</h2>
-            <br>
-            <h2>Total Questions:
-                <span id="totalQuestions"></span>
-            </h2>
-            <br>
-            <h2>Total Correct:
-                <span id="totalCorrect"></span>
-            </h2>
-            <br>
-            <h2>Total Incorrect:
-                <span id="totalWrong"></span>
-            </h2>
-            <br><br>
-            <button class="btn btn-danger" id="playAgainButton">Click here to play again</button>
+        <div class="row">
+            <div class="col-sm-12" id="finalResult">
+                <h2 id="resultHeader">Results:</h2>
+                <br>
+                <h2>Total Questions:
+                    <span id="totalQuestions"></span>
+                </h2>
+                <br>
+                <h2>Total Correct:
+                    <span id="totalCorrect"></span>
+                </h2>
+                <br>
+                <h2>Total Incorrect:
+                    <span id="totalWrong"></span>
+                </h2>
+                <br>
+                <h2>Total Timeouts:
+                    <span id="totalTimeout"></span>
+                </h2>
+                <br>
+                <br>
+                <br>
+                <button class="btn btn-danger" id="playAgainButton">Click here to play again</button>
+            </div>
         </div>
     </main>
 
