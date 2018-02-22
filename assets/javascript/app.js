@@ -155,23 +155,23 @@ $(document).ready(function () {
     //function countdown - decrements global var timer by 1, displays to html
     function countdown() {
         if (questionNumber > 10) {
-            clearInterval(questionTimer)
-            var delayFinal = setTimeout(function () {
+            clearInterval(questionTimer) //stopping timer here but doesn't work?
+            var delayFinal = setTimeout(function () { //delay in case the last question is a timeout.  This allows time for the transition screen to finish first.
                 finalTally()
                 clearTimeout(delayFinal)
             }, 4000)
         }
         else if (timer <= 0) {
             $("#timeRemaining").html("Time's Up!")
-            clearInterval(questionTimer)
+            clearInterval(questionTimer) //stopping timer here but doesn't work?
             $("#rightWrongTimeout").html("TIME IS UP!")
             answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
             totalTimeout++
             randQuestionNum++
             questionNumber++
-            timer = 10
+            timer = 13  //had to allow for that 3 sec transition, as described in bootcampspot comments
             questionTimer = setInterval(countdown, 1000)
-            console.log(randQuestionNum)
+            console.log("questionTimer"+questionTimer)
             loadQuestion(questionNumber, randQuestionNum)
         }
         else {
@@ -239,14 +239,14 @@ $(document).ready(function () {
         $("#splash").hide()
         $("#questions").show()
 
-        timer = 10
+        timer = 10 // initial timer is ok
         questionTimer = setInterval(countdown, 1000)
         loadQuestion(questionNumber, randQuestionNum)
 
 
         $(".answer").on("click", function () {
             clearInterval(questionTimer)
-            timer = 10
+            timer = 13 //had to allow for that 3 sec transition, as described in bootcampspot comments
             if (parseInt($(this).attr("value")) === triviaQuestion[randQuestionNum].correct) {
                 $("#rightWrongTimeout").html("CORRECT!")
                 answerAnimation(triviaQuestion[randQuestionNum].question, triviaQuestion[randQuestionNum].answers[triviaQuestion[randQuestionNum].correct], triviaQuestion[randQuestionNum].image)
@@ -265,7 +265,7 @@ $(document).ready(function () {
                 else {
                     //debug console.log("answerclick inside final else " + questionNumber)                 
                     questionTimer = setInterval(countdown, 1000)
-                    questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
+                    loadQuestion(questionNumber, randQuestionNum)
                 }
             }
             else if (parseInt($(this).attr("value")) !== triviaQuestion[randQuestionNum].correct) {
@@ -287,7 +287,7 @@ $(document).ready(function () {
                     //debug console.log("answerclick inside final else " + questionNumber)
 
                     questionTimer = setInterval(countdown, 1000)
-                    questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
+                    loadQuestion(questionNumber, randQuestionNum)
                 }
             }
         })//end click answer 
@@ -299,7 +299,7 @@ $(document).ready(function () {
         totalCorrect = 0
         totalWrong = 0
         totalTimeout = 0
-        timer = 10
+        timer = 10 
         randQuestionNum = 0
         questionNumber = 1
         triviaQuestion = shuffle(triviaQuestion) //This shuffles the questions
@@ -308,11 +308,13 @@ $(document).ready(function () {
         $("#transition").hide()
         $("#finalResult").hide()
 
-        clearInterval(questionTimer)
+        clearInterval(questionTimer) 
         questionTimer = setInterval(countdown, 1000)
-        questionDelay = setTimeout(loadQuestion(questionNumber, randQuestionNum),6000)
+        loadQuestion(questionNumber, randQuestionNum)
     })
 });  //close document.ready
+
+
 
 
 
